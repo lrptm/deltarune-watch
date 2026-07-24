@@ -2,7 +2,7 @@ name: Check 4chan /v/ for Deltarune threads
 
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:
