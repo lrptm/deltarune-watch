@@ -39,7 +39,9 @@ KEYWORDS = [
     "dark fountain", "dark world", "shadow crystal", "shadow mantle",
     "shelter", "angel heaven", "angels heaven",
     "castle town", "hometown", "weird route", "snowgrave",
-    "proceeded", "proceeds", "roiling in code",
+    "proceed", "proceeded", "proceeds", "roiling in code",
+    "genocide", "vessel", "undertale", "toby", "janny",
+    "darkners", "lightners",
     "roaring knight", "thorn ring", "side b", "aborted route",
     "schizo bosses", "kriselle", "suselle", "krusie",
     # Chapter-specific terms
