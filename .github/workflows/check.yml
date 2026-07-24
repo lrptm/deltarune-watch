@@ -1,0 +1,31 @@
+name: Check 4chan /v/ for Deltarune threads
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Check for new Deltarune threads
+        run: python deltarune_watch.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "deltarune-watch"
+          git config user.email "deltarune-watch@users.noreply.github.com"
+          git add seen.json deltarune_feed.xml
+          git diff --cached --quiet || git commit -m "Update RSS feed [skip ci]"
+          git push

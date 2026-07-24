@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Deltarune Threads on /v/</title>
+    <link>https://boards.4chan.org/v/</link>
+    <description>New threads mentioning Deltarune on 4chan's /v/ board, checked hourly</description>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Jul 2026 00:12:09 +0000</lastBuildDate>
+    <atom:link href="https://raw.githubusercontent.com/lrptm/deltarune-watch/main/deltarune_feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>No threads yet</title>
+      <link>https://boards.4chan.org/v/</link>
+      <guid>deltarune-watch-start</guid>
+      <pubDate>Fri, 24 Jul 2026 00:12:09 +0000</pubDate>
+      <description>No Deltarune threads found yet. The feed will update when a new thread is detected.</description>
+    </item>
+  </channel>
+</rss>
