@@ -44,6 +44,7 @@ KEYWORDS = [
     "darkners", "lightners",
     "roaring knight", "thorn ring", "side b", "aborted route",
     "schizo bosses", "kriselle", "suselle", "krusie",
+    "flower man", "the festival", "lake scene",
     # Chapter-specific terms
     "chapter 5", "chapter 6", "chapter 7",
     "flower girls", "gerson", "heartache",
