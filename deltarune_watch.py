@@ -31,7 +31,7 @@ KEYWORDS = [
     "deltarune",
     # Character names specific to Deltarune (high confidence, no false positives)
     "spamton", "jevil", "ralsei", "berdly", "rouxl kaard",
-    "mad mew mew", "tenna",
+    "mad mew mew", "tenna", "eram", "seam",
     # Character names that appear without "deltarune" on /v/
     "kris", "noelle", "susie", "asgore", "dess", "flowery",
     "catti", "rudy",
@@ -40,6 +40,8 @@ KEYWORDS = [
     "shelter", "angel heaven", "angels heaven",
     "castle town", "hometown", "weird route", "snowgrave",
     "proceeded", "proceeds", "roiling in code",
+    "roaring knight", "thorn ring", "side b", "aborted route",
+    "schizo bosses", "kriselle", "suselle", "krusie",
     # Chapter-specific terms
     "chapter 5", "chapter 6", "chapter 7",
     "flower girls", "gerson", "heartache",
