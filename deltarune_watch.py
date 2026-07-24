@@ -22,9 +22,14 @@ def save_state(state):
 
 def fetch_catalog():
     url = "https://a.4cdn.org/v/catalog.json"
-    req = Request(url, headers={"User-Agent": "DeltaruneWatch/1.0 (github.com/USER/deltarune-watch)"})
-    with urlopen(req, timeout=15) as resp:
-        return json.loads(resp.read())
+    req = Request(url, headers={"User-Agent": "DeltaruneWatch/1.0 (github.com/lrptm/deltarune-watch)"})
+    try:
+        with urlopen(req, timeout=30) as resp:
+            data = resp.read()
+            return json.loads(data)
+    except Exception as e:
+        print(f"Failed to fetch catalog: {e}")
+        return []
 
 KEYWORDS = [
     # Direct title matches
@@ -142,10 +147,13 @@ def generate_rss(new_threads):
         f.write(feed)
 
 if __name__ == "__main__":
-    new = check_board()
-    if new:
-        print(f"Found {len(new)} new Deltarune thread(s):")
-        for t in new:
-            print(f"  {t['title']} - {t['url']}")
-    else:
-        print("No new Deltarune threads found.")
+    try:
+        new = check_board()
+        if new:
+            print(f"Found {len(new)} new Deltarune thread(s):")
+            for t in new:
+                print(f"  {t['title']} - {t['url']}")
+        else:
+            print("No new Deltarune threads found.")
+    except Exception as e:
+        print(f"Error: {e}")
