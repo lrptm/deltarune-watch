@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import time
 from datetime import datetime, timezone
 from urllib.request import urlopen, Request
@@ -26,28 +27,36 @@ def fetch_catalog():
         return json.loads(resp.read())
 
 KEYWORDS = [
-    "deltarune", "deltarûne", "chapter 3", "chapter3", "ch3",
-    "deltarune ch", "deltarune chapter", "deltarune 3", "deltarune3",
-    "deltarune 4", "deltarune 5", "deltarune 6", "deltarune 7",
-    "deltarune switch", "deltarune ps4", "deltarune xbox",
-    "deltarune steam", "deltarune sale", "deltarune deal",
-    "deltarune 2", "deltarune2", "deltarune full", "deltarune release",
-    "deltarune update", "deltarune news", "deltarune fox",
-    "deltarune toby", "deltarune fangame", "deltarune mod",
-    "deltarune theory", "deltarune lore", "deltarune secret",
-    "deltarune ralsei", "deltarune kris", "deltarune susie",
-    "deltarune noelle", "deltarune spamton", "deltarune jevil",
-    "deltarune queen", "deltarune berdly", "deltarune snowgrave",
-    "deltarune weird", "deltarune unused", "deltarune ost",
-    "deltarune music", "deltarune fanart", "deltarune meme",
-    "deltarune general",
+    # Direct title matches
+    "deltarune",
+    # Character names specific to Deltarune (high confidence, no false positives)
+    "spamton", "jevil", "ralsei", "berdly", "rouxl kaard",
+    "mad mew mew", "tenna",
+    # Character names that appear without "deltarune" on /v/
+    "kris", "noelle", "susie", "asgore", "dess", "flowery",
+    "catti", "rudy",
+    # Dark world / lore terms
+    "dark fountain", "dark world", "shadow crystal", "shadow mantle",
+    "shelter", "angel heaven", "angels heaven",
+    "castle town", "hometown", "weird route", "snowgrave",
+    "proceeded", "proceeds", "roiling in code",
+    # Chapter-specific terms
+    "chapter 5", "chapter 6", "chapter 7",
+    "flower girls", "gerson", "heartache",
+    "rude buster", "dark sanctuary", "tv time", "black knife",
+    "egg man", "man behind the tree", "noelle blog",
+    "spamton sweepstakes", "keygen music", "big shot",
+    # General Deltarune thread terms
+    "deltarune chapter", "deltarune general",
+    "deltarune theory", "deltarune lore", "deltarune news",
+    "deltarune fanart", "deltarune meme", "deltarune ost",
 ]
 
 def is_deltarune_thread(thread):
     com = thread.get("com", "").lower()
     sub = thread.get("sub", "").lower()
     text = com + " " + sub
-    return any(kw in text for kw in KEYWORDS)
+    return any(re.search(r'\b' + re.escape(kw) + r'\b', text) for kw in KEYWORDS)
 
 def check_board():
     state = load_state()

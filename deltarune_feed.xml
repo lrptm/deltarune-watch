@@ -5,14 +5,14 @@
     <link>https://boards.4chan.org/v/</link>
     <description>New threads mentioning Deltarune on 4chan's /v/ board, checked hourly</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 24 Jul 2026 00:12:09 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Jul 2026 04:17:20 +0000</lastBuildDate>
     <atom:link href="https://raw.githubusercontent.com/lrptm/deltarune-watch/main/deltarune_feed.xml" rel="self" type="application/rss+xml"/>
     <item>
-      <title>No threads yet</title>
-      <link>https://boards.4chan.org/v/</link>
-      <guid>deltarune-watch-start</guid>
-      <pubDate>Fri, 24 Jul 2026 00:12:09 +0000</pubDate>
-      <description>No Deltarune threads found yet. The feed will update when a new thread is detected.</description>
+      <title>Marvel Rivals</title>
+      <link>https://boards.4chan.org/v/thread/743921405/</link>
+      <guid isPermaLink="true">https://boards.4chan.org/v/thread/743921405/</guid>
+      <pubDate>Fri, 24 Jul 2026 03:11:04 +0000</pubDate>
+      <description>The Goddess of Death shouldn&amp;#039;t dress or act like this</description>
     </item>
   </channel>
 </rss>
