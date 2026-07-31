@@ -104,18 +104,23 @@ def fetch_archive_thread(thread_no):
         return None
 
     subject = ""
-    subject_match = re.search(r'class="subject"[^>]*>(.*?)</span>', html, re.DOTALL)
+    subject_match = re.search(r'class="post_title"[^>]*>(.*?)</h2>', html, re.DOTALL)
     if subject_match:
         subject = re.sub(r'<[^>]+>', '', subject_match.group(1)).strip()
 
-    text = re.sub(r'<[^>]+>', ' ', html)
-    text = re.sub(r'\s+', ' ', text)
+    text_parts = []
+    for m in re.finditer(r'class="text"[^>]*>(.*?)</div>', html, re.DOTALL):
+        part = re.sub(r'<[^>]+>', ' ', m.group(1))
+        part = re.sub(r'\s+', ' ', part).strip()
+        if part:
+            text_parts.append(part)
+    text = " ".join(text_parts)
 
     thread_time = None
-    date_match = re.search(r'(\d{4}-\d{2}-\d{2})', html)
-    if date_match:
+    time_match = re.search(r'<time datetime="(\d{4}-\d{2}-\d{2})', html)
+    if time_match:
         try:
-            thread_time = datetime.strptime(date_match.group(1), "%Y-%m-%d").replace(tzinfo=timezone.utc)
+            thread_time = datetime.strptime(time_match.group(1), "%Y-%m-%d").replace(tzinfo=timezone.utc)
         except ValueError:
             pass
 
