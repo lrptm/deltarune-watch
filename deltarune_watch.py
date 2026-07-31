@@ -62,6 +62,18 @@ KEYWORDS = [
     "deltarune fanart", "deltarune meme", "deltarune ost",
 ]
 
+HIGH_CONFIDENCE_TERMS = [
+    "deltarune",
+    "spamton", "jevil", "ralsei", "berdly", "rouxl kaard",
+    "mad mew mew", "tenna", "eram", "seam",
+    "kris", "noelle", "susie",
+    "kriselle", "suselle", "krusie",
+    "weird route", "snowgrave",
+    "dark fountain", "shadow crystal", "shadow mantle",
+    "roaring knight", "thorn ring",
+    "chapter 5", "chapter 6", "chapter 7",
+]
+
 def is_deltarune_thread(thread):
     com = thread.get("com", "").lower()
     sub = thread.get("sub", "").lower()
@@ -130,10 +142,15 @@ def is_deltarune_archive_thread(thread):
     all_text = thread["subject"] + " " + thread["text"]
     all_text_lower = all_text.lower()
     matches = []
+    has_high_confidence = False
     for kw in KEYWORDS:
         if re.search(r'\b' + re.escape(kw) + r'\b', all_text_lower):
             matches.append(kw)
-    return matches
+            if kw.lower() in [t.lower() for t in HIGH_CONFIDENCE_TERMS]:
+                has_high_confidence = True
+    if len(matches) >= 3 or has_high_confidence:
+        return matches
+    return []
 
 def check_board():
     state = load_state()
