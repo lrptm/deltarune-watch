@@ -1,3 +1,9 @@
 deltarune_watch_state.json
 __pycache__/
 *.pyc
+QuiteRSS/
+fb-watch/
+riggi-watch/
+Cloudflare_Workers_AI_ST_Setup.txt
+WordFreqFinder.ps1
+deltarune_word_freq.csv

@@ -2,7 +2,7 @@ import json
 import os
 import re
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from urllib.request import urlopen, Request
 from xml.sax.saxutils import escape as xml_escape
 
@@ -68,6 +68,73 @@ def is_deltarune_thread(thread):
     text = com + " " + sub
     return any(re.search(r'\b' + re.escape(kw) + r'\b', text) for kw in KEYWORDS)
 
+def fetch_url(url):
+    req = Request(url, headers={
+        "User-Agent": "Mozilla/5.0 (compatible; DeltaruneWatch/1.0)"
+    })
+    try:
+        with urlopen(req, timeout=30) as resp:
+            return resp.read().decode("utf-8", errors="replace")
+    except Exception as e:
+        print(f"Failed to fetch {url}: {e}")
+        return ""
+
+def search_deltarune_archive():
+    url = "https://arch.b4k.dev/v/search/text/deltarune/"
+    html = fetch_url(url)
+    if not html:
+        return []
+
+    thread_nos = set()
+    for match in re.finditer(r'/v/thread/(\d+)/', html):
+        thread_nos.add(int(match.group(1)))
+
+    return list(thread_nos)
+
+def fetch_archive_thread(thread_no):
+    url = f"https://arch.b4k.dev/v/thread/{thread_no}/"
+    html = fetch_url(url)
+    if not html:
+        return None
+
+    subject = ""
+    subject_match = re.search(r'class="subject"[^>]*>(.*?)</span>', html, re.DOTALL)
+    if subject_match:
+        subject = re.sub(r'<[^>]+>', '', subject_match.group(1)).strip()
+
+    text = re.sub(r'<[^>]+>', ' ', html)
+    text = re.sub(r'\s+', ' ', text)
+
+    thread_time = None
+    date_match = re.search(r'(\d{4}-\d{2}-\d{2})', html)
+    if date_match:
+        try:
+            thread_time = datetime.strptime(date_match.group(1), "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        except ValueError:
+            pass
+
+    if not thread_time:
+        ts_match = re.search(r'data-date="(\d+)"', html)
+        if ts_match:
+            thread_time = datetime.fromtimestamp(int(ts_match.group(1)), tz=timezone.utc)
+
+    return {
+        "no": thread_no,
+        "subject": subject,
+        "text": text,
+        "time": thread_time,
+        "url": f"https://boards.4chan.org/v/thread/{thread_no}/",
+    }
+
+def is_deltarune_archive_thread(thread):
+    all_text = thread["subject"] + " " + thread["text"]
+    all_text_lower = all_text.lower()
+    matches = []
+    for kw in KEYWORDS:
+        if re.search(r'\b' + re.escape(kw) + r'\b', all_text_lower):
+            matches.append(kw)
+    return matches
+
 def check_board():
     state = load_state()
     seen = set(state.get("seen", []))
@@ -93,7 +160,6 @@ def check_board():
 
     if new_threads:
         save_state({"seen": list(seen)})
-    generate_rss(new_threads)
     return new_threads
 
 def generate_rss(new_threads):
@@ -146,14 +212,70 @@ def generate_rss(new_threads):
     with open(RSS_FILE, "w") as f:
         f.write(feed)
 
+def check_archive():
+    state = load_state()
+    seen = set(state.get("seen", []))
+    cutoff = datetime.now(timezone.utc) - timedelta(days=7)
+
+    print("\nSearching arch.b4k.dev for 'deltarune'...")
+    thread_nos = search_deltarune_archive()
+    print(f"Found {len(thread_nos)} threads mentioning 'deltarune'")
+
+    new_threads = []
+    for no in thread_nos:
+        if no in seen:
+            continue
+
+        print(f"  Checking thread {no}...")
+        thread = fetch_archive_thread(no)
+        if not thread:
+            continue
+
+        if thread["time"] and thread["time"] < cutoff:
+            print(f"    SKIPPED: older than 7 days ({thread['time'].strftime('%Y-%m-%d')})")
+            seen.add(no)
+            continue
+
+        matches = is_deltarune_archive_thread(thread)
+        seen.add(no)
+
+        if matches:
+            new_threads.append({
+                "id": no,
+                "title": thread["subject"] or f"Thread {no}",
+                "url": thread["url"],
+                "time": int(time.time()),
+                "preview": thread["text"][:500] if thread["text"] else "",
+                "matched": ", ".join(matches[:5]),
+            })
+            print(f"    DELTARUNE: matched {matches[:5]}")
+        else:
+            print(f"    SKIPPED: no Deltarune context")
+
+    if new_threads:
+        save_state({"seen": list(seen)})
+
+    return new_threads
+
 if __name__ == "__main__":
     try:
         new = check_board()
         if new:
-            print(f"Found {len(new)} new Deltarune thread(s):")
+            print(f"Found {len(new)} new Deltarune thread(s) from catalog:")
             for t in new:
                 print(f"  {t['title']} - {t['url']}")
         else:
-            print("No new Deltarune threads found.")
+            print("No new Deltarune threads found in catalog.")
+
+        archive_new = check_archive()
+        if archive_new:
+            print(f"\nFound {len(archive_new)} Deltarune thread(s) from archive:")
+            for t in archive_new:
+                print(f"  {t['title']} - {t['url']}")
+        else:
+            print("\nNo new Deltarune threads found in archive.")
+
+        all_new = new + archive_new
+        generate_rss(all_new)
     except Exception as e:
         print(f"Error: {e}")
