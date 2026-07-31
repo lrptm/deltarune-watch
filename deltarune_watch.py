@@ -63,15 +63,9 @@ KEYWORDS = [
 ]
 
 HIGH_CONFIDENCE_TERMS = [
-    "deltarune",
-    "spamton", "jevil", "ralsei", "berdly", "rouxl kaard",
-    "mad mew mew", "tenna", "eram", "seam",
-    "kris", "noelle", "susie",
     "kriselle", "suselle", "krusie",
-    "weird route", "snowgrave",
-    "dark fountain", "shadow crystal", "shadow mantle",
-    "roaring knight", "thorn ring",
-    "chapter 5", "chapter 6", "chapter 7",
+    "rouxl kaard", "mad mew mew",
+    "snowgrave", "roaring knight",
 ]
 
 def is_deltarune_thread(thread):
