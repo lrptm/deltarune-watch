@@ -5,14 +5,21 @@
     <link>https://boards.4chan.org/v/</link>
     <description>New threads mentioning Deltarune on 4chan's /v/ board, checked hourly</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 13 Aug 2026 09:43:21 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Aug 2026 12:10:32 +0000</lastBuildDate>
     <atom:link href="https://raw.githubusercontent.com/lrptm/deltarune-watch/main/deltarune_feed.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>(no subject)</title>
-      <link>https://boards.4chan.org/v/thread/745260123/</link>
-      <guid isPermaLink="true">https://boards.4chan.org/v/thread/745260123/</guid>
-      <pubDate>Thu, 13 Aug 2026 09:30:37 +0000</pubDate>
-      <description>Which game?&lt;br&gt;Hardmode: no Undertale/Deltarune</description>
+      <link>https://boards.4chan.org/v/thread/745264697/</link>
+      <guid isPermaLink="true">https://boards.4chan.org/v/thread/745264697/</guid>
+      <pubDate>Thu, 13 Aug 2026 11:49:33 +0000</pubDate>
+      <description>Why does the video game industry care more about profits than genocide?</description>
+    </item>
+    <item>
+      <title>(no subject)</title>
+      <link>https://boards.4chan.org/v/thread/745263242/</link>
+      <guid isPermaLink="true">https://boards.4chan.org/v/thread/745263242/</guid>
+      <pubDate>Thu, 13 Aug 2026 11:13:48 +0000</pubDate>
+      <description>what are some games where you play as Ralsei?</description>
     </item>
   </channel>
 </rss>
